@@ -2,14 +2,20 @@
 
 ## What idea(s) do you have for your final project?
 
-TODO
+1. a diet plan tracker, it can track the food you eat and the macros. Can select a certain diet plan if wanted, and the app will warn you if you consuming too much of a macro or not ( carbs,fat, etc)
+  (based off MyFitnessPal) ( will be the hardest to do, espically alone)
+2. text based RPG
+3.something with pygame
+4 no clue but something with real world applications
+ 
+
 
 ## If you plan to collaborate with one or two classmates, what are their names?
 
+N/A (doing this alone)
 
 
-TODO
 
 ## Do you have any questions of your own?
 
-TODO
+Is my first idea something that seems resonable, and doable on python? If yes, how would I be able to present this, should it be an app or website etc. 
