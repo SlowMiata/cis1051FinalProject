@@ -1,0 +1,31 @@
+# Status Report
+
+#### Your name
+
+Tu Ha
+
+#### Your section leader's name
+
+Joanne Nichols
+
+#### Project title
+
+Pong 2: The Pongwerful
+
+***
+
+Short answers for the below questions suffice. If you want to alter your plan for your project (and obtain approval for the same), be sure to email your section leader directly!
+
+#### What have you done for your project so far?
+
+I almost completed the base game of pong, just need to do some interaction and scoreboard and the base game will be done.
+
+#### What have you not done for your project yet?
+
+The powerups and other features 
+
+#### What problems, if any, have you encountered?
+
+A lot of problem, 1. i never used unity before so i am learning as i am going
+Its in c#, so I am trying to learn that language. Its similar to python so I think I can finish the project
+
