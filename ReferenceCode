@@ -1,0 +1,196 @@
+## MFLeon27'S Base code
+
+## Ball
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Ball : MonoBehaviour
+{
+
+    public float speed;
+    public Rigidbody2D rb;
+    public Vector3 startPosition;
+
+    private float x;
+    private float y;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        startPosition = transform.position;
+        Launch();
+
+    }
+
+    private void Launch()
+    {
+        if (Random.Range(0, 2) == 0)
+        {
+            x = -1;
+           
+
+        }
+
+        else
+        {
+            x = 1;
+            
+        }
+
+        if (Random.Range(0, 2) == 0)
+        {
+            y = -1;
+
+        }
+
+        else
+        {
+            y = 1;
+        }
+
+        rb.velocity = new Vector2(speed * x, speed * y);
+    }
+
+
+
+    public void Reset()
+    {
+        rb.velocity = Vector2.zero; transform.position = startPosition;
+        Launch();
+
+
+    }
+
+}
+
+
+##Paddle
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Paddles : MonoBehaviour
+{
+
+    public bool isPlayer1;
+    public float speed;
+    public Rigidbody2D rb;
+
+    private float movement;
+
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (isPlayer1)
+        {
+            movement = Input.GetAxisRaw("Paddle1");
+        }
+        else
+        {
+            movement = Input.GetAxisRaw("Paddle2");
+
+        }
+        rb.velocity = new Vector2(rb.velocity.x, movement * speed);
+        
+
+
+
+    }
+}
+
+
+##Goal 
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Goal : MonoBehaviour
+{
+    public bool isPlayer1Goal;
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ball"))
+        {
+            if (isPlayer1Goal)
+            {
+                GameObject.Find("Gamemanager").GetComponent<Gamemanager>().Player2Scored();
+            }
+            else
+            {
+                GameObject.Find("Gamemanager").GetComponent<Gamemanager>().Player1Scored();
+            }
+        }
+    }
+}
+
+#Gamemanager
+
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+
+public class Gamemanager : MonoBehaviour
+{
+    [Header("Ball")]
+    public GameObject Ball;
+
+    [Header("Player 1")]
+    public GameObject Player1paddle;
+    public GameObject Player1goal;
+
+    [Header("Player 2")]
+    public GameObject Player2paddle;
+    public GameObject Player2goal;
+
+    [Header("Score UI")]
+    public GameObject Player1Text;
+    public GameObject Player2Text;
+
+    private int player1score;
+    private int player2score;
+
+    private void ResetPosition()
+    {
+        Ball.GetComponent<Ball>().Reset();
+    }
+
+    public void Player1Scored()
+    {
+        player1score++;
+        Player1Text.GetComponent<TextMeshProUGUI>().text = player1score.ToString();
+        ResetPosition();
+    }
+
+    public void Player2Scored()
+    {
+        player2score++;
+        Player2Text.GetComponent<TextMeshProUGUI>().text = player2score.ToString();
+        ResetPosition();
+    }
+
+
+
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKey("escape"))
+        {
+            Application.Quit();
+        }
+
+    }
+}
+
