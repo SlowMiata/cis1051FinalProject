@@ -11,4 +11,8 @@ The balls can bounce off each other and a barrier block in the middle making the
 
 The paddles constantly changes size making the game a little harder.
 
+##Codes
 
+There are 6 sections of code
+
+Ball,paddles,goal,paddleSize,PaddleDie,Gamanager, each section has comments that says what each section do
