@@ -7,4 +7,6 @@ I would consider this project mostly done. Quite frankly a lot more features cou
 ## Mods
 There are two balls. One ball is normal and the other ball(red) makes a player lose a point when it touches the paddle.
 
-The 
+The paddles constantly changes size making the game a little harder.
+
+
