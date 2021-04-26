@@ -1,0 +1,325 @@
+## Ball Code##
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Ball : MonoBehaviour
+{
+
+    private float speed;
+    private float boostTimer;
+    private bool boosting;
+
+    public Rigidbody2D rb;
+    public Vector3 startPosition;
+
+    private float x;
+    private float y;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        speed = 4;             // This sets the speed of the ball
+       
+        startPosition = transform.position; // sets the position of the balls to their starting point
+        Launch();
+
+    }
+    
+
+   
+
+
+    public void Launch() // this picks the direction that the ball goes at the beginning
+    {
+        if (Random.Range(0, 2) == 0) // between 0 and 1, 0 makes it goes left 
+        {
+            x = -1;
+        }
+
+        else
+        {
+            x = 1;           
+        }
+
+        if (Random.Range(0, 2) == 0) // zero makes it goes down
+        {
+            y = -1;
+        }
+
+        else
+        {
+            y = 1;
+        }
+        rb.velocity = new Vector2(speed * x, speed * y); // this is the continuous movement for the ball
+    }
+
+    public void Reset()
+    {
+        rb.velocity = Vector2.zero; transform.position = startPosition; //sets ball back to their starting position
+        Launch();
+    }
+
+}
+
+## Paddle Codes##
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Paddles : MonoBehaviour
+{
+    private float speed;
+    private float boostTimer;
+    private bool boosting;
+
+
+    public bool isPlayer1;
+    public Rigidbody2D rb;
+
+    private float movement;
+
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        speed = 12; // how fast the paddles are moving
+       
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (isPlayer1)
+        {
+            movement = Input.GetAxisRaw("Paddle1"); // Paddle1 has the keys input of the down and up arrow keys
+        }
+        else
+        {
+            movement = Input.GetAxisRaw("Paddle2"); // paddle2 has the w and s keys for movement 
+
+        }
+        rb.velocity = new Vector2(rb.velocity.x, movement * speed);
+
+    }
+}
+
+##Goal Code##
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Goal : MonoBehaviour
+{
+    public bool isPlayer1Goal;
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ball")) // if the ball which has the tag "ball" collide witht the goals its runs these functions
+        {
+            if (isPlayer1Goal)
+            {
+                GameObject.Find("Gamemanager").GetComponent<Gamemanager>().Player2Scored(); // adds a point to player 2 because the ball touched player 1 goal 
+            }
+            else
+            {
+                GameObject.Find("Gamemanager").GetComponent<Gamemanager>().Player1Scored(); // adds a point to player 1 because the ball touched player 2 goal
+            }
+
+        if (collision.gameObject.CompareTag("Ball2"))
+        {
+            if (isPlayer1Goal)
+            {
+                    GameObject.Find("Gamemanager").GetComponent<Gamemanager>().Again();
+            }
+            else
+            {
+                    GameObject.Find("Gamemanager").GetComponent<Gamemanager>().Again();
+            }
+
+        }
+
+        }
+    }
+}
+
+##PaddleSize##
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PaddleSize : MonoBehaviour
+{
+    bool increasing = true;
+    Vector3 Scaler;
+    float maxY;
+    float minY;
+
+    // reference code from stackoverflow 
+    void Start()
+    {
+        minY = transform.localScale.x;
+        maxY = 3;
+        Scaler = transform.localScale;
+    }
+
+    
+    void Update() // this controls the paddle size, making it shrink and grow
+    {
+        if (Scaler.y >= maxY)
+        {
+            increasing = false;
+        }
+        else if (Scaler.y <= minY)
+        {
+            increasing = true;
+        }
+
+        if (increasing)
+        {
+            Scaler.y += .003f;
+        }
+        if (!increasing)
+        {
+            Scaler.y -= .003f;
+        }
+
+        transform.localScale = Scaler;
+    } 
+}
+
+##paddleDie##
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PaddleDie : MonoBehaviour
+{
+    public bool isPlayer2Paddle;
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ball2")) // this code is for the red ball where if it touches the paddles it will cause the player to lose a point
+        {
+            if (isPlayer2Paddle)
+            {
+                GameObject.Find("Gamemanager").GetComponent<Gamemanager>().Player2Die();
+            }
+            else
+            {
+                GameObject.Find("Gamemanager").GetComponent<Gamemanager>().Player1Die();
+            }
+        }
+    }
+}
+
+##GameManager##
+
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+
+public class Gamemanager : MonoBehaviour
+{
+    [Header("Ball")]                    // this whole section makes the ball and paddles etc, into acutally gameobjects that can interact with each other
+    public GameObject Ball;
+    public GameObject Ball3;
+
+
+    [Header("Ball2")]
+    public GameObject Ball2;
+
+    [Header("Player 1")]
+    public GameObject Player1paddle;
+    public GameObject Player1goal;
+
+    [Header("Player 2")]
+    public GameObject Player2paddle;
+    public GameObject Player2goal;
+
+    [Header("Score UI")]
+    public GameObject Player1Text;
+    public GameObject Player2Text;
+
+
+
+
+    private int player1score;
+    private int player2score;
+
+
+    
+
+
+
+    private void ResetPosition()  // calls the function reset() to get that ball back to their starting poistion
+    {
+
+        Ball.GetComponent<Ball>().Reset();
+        Ball2.GetComponent<Ball>().Reset();
+        Ball3.GetComponent<Ball>().Reset();
+    }
+
+    
+
+
+    public void Player1Scored()  // this is the code for the actual scoreboard, this increases the score
+    {
+        player1score++;
+        Player1Text.GetComponent<TextMeshProUGUI>().text = player1score.ToString();
+        ResetPosition();
+    }
+
+    public void Player2Scored()
+    {
+        player2score++;
+        Player2Text.GetComponent<TextMeshProUGUI>().text = player2score.ToString();
+        ResetPosition();
+    }
+
+    public void Player1Die()   // this decreases the score
+    {
+        player1score --;
+        Player1Text.GetComponent<TextMeshProUGUI>().text = player1score.ToString();
+        ResetPosition();
+    }
+
+    public void Player2Die()
+    {
+        player2score --;
+        Player2Text.GetComponent<TextMeshProUGUI>().text = player2score.ToString();
+        ResetPosition();
+    }
+
+
+    public void Again()
+    {
+        
+        ResetPosition();
+    }
+
+
+
+
+
+    void Update()   //this makes it so when the player hits the escape key it ends the game or when one player reaches 15 points. 
+    {
+        if (Input.GetKey("escape"))
+        {
+            Application.Quit();
+        }
+        if (player2score == 15)
+        {
+            Application.Quit();
+        }
+        if (player1score == 15)
+        {
+            Application.Quit();
+        }
+    }
+}
