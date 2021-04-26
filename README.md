@@ -5,7 +5,7 @@ His code and my code are combined, there will be a seperate code folder that wil
 
 I would consider this project mostly done. Quite frankly a lot more features could be added but I did the best I could and I did fullfill part of what I said I would add in my Preposal.md.
 ## Mods
-There are two balls. One ball is normal and the other ball(red) makes a player lose a point when it touches the paddle.
+There are three balls. Two balls are normal and the other ball(red) makes a player lose a point when it touches the paddle.
 
 The balls can bounce off each other and a barrier block in the middle making their paths more unpredictable.
 
